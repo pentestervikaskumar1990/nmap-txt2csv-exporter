@@ -1,0 +1,94 @@
+#**************************************Nmap scan result converter from txt to csv*************************************************#
+import re
+import csv
+import os
+
+def parse_nmap_to_csv(input_file, output_file):
+    # Regular expressions for parsing
+    ip_pattern = re.compile(r'Nmap scan report for ([\d.]+)')
+    port_pattern = re.compile(r'(\d+)/(tcp|udp)\s+(\w+)\s+([^\s]+)(?:\s+(.*))?')
+
+    current_ip = None
+    results = []
+
+    try:
+        with open(input_file, 'r') as f:
+            for line in f:
+                # Check for IP address line
+                ip_match = ip_pattern.match(line.strip())
+                if ip_match:
+                    current_ip = ip_match.group(1)
+                    continue
+
+                # Check for port information line
+                if current_ip and not line.strip().startswith(('PORT', 'PORT ')):
+                    port_match = port_pattern.match(line.strip())
+                    if port_match:
+                        port_num = port_match.group(1)
+                        protocol = port_match.group(2)
+                        state = port_match.group(3)
+                        service = port_match.group(4)
+                        version = port_match.group(5) if port_match.group(5) else ''
+
+                        # Clean up version string
+                        version = version.split('|_')[0].strip()
+
+                        results.append({
+                            'IP': current_ip,
+                            'Port': port_num,
+                            'Protocol': protocol.upper(),  # TCP/UDP in uppercase
+                            'State': state,
+                            'Service': service,
+                            'Version': version
+                        })
+
+        # Write to CSV
+        if results:
+            with open(output_file, 'w', newline='') as csvfile:
+                fieldnames = ['IP', 'Port', 'Protocol', 'State', 'Service', 'Version']
+                writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+
+                writer.writeheader()
+                for row in results:
+                    writer.writerow(row)
+
+            print(f"\nSuccessfully converted Nmap data to {output_file}")
+            print(f"Found {len(results)} open ports across all hosts.")
+        else:
+            print("\nNo valid Nmap data found to convert.")
+    
+    except FileNotFoundError:
+        print(f"\nError: Input file '{input_file}' not found.")
+    except Exception as e:
+        print(f"\nAn error occurred: {str(e)}")
+
+def get_valid_filename(prompt, default=None):
+    while True:
+        filename = input(prompt).strip()
+        if not filename and default:
+            return default
+        elif filename:
+            return filename
+        else:
+            print("Please enter a valid filename.")
+
+if __name__ == "__main__":
+    print("Nmap Scan Results to CSV Converter")
+    print("---------------------------------")
+    
+    # Get input filename with 'nmap.txt' as default
+    input_filename = get_valid_filename(
+        "Enter the Nmap scan results filename [nmap.txt]: ",
+        "nmap.txt"
+    )
+    
+    # Get output filename with 'nmap_results.csv' as default
+    output_filename = get_valid_filename(
+        "Enter the output CSV filename [nmap_results.csv]: ",
+        "nmap_results.csv"
+    )
+    
+    # Run the conversion
+    parse_nmap_to_csv(input_filename, output_filename)
+
+
