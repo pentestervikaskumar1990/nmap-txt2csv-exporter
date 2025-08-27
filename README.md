@@ -43,3 +43,6 @@ A lightweight and efficient Python script that parses standard Nmap output from 
     - Press `Enter` for output file (`nmap_results.csv`)
 
 **Example output:**
+
+📁 Repository Structure
+
