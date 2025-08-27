@@ -39,14 +39,8 @@ A lightweight and efficient Python script that parses standard Nmap output from 
     ```
 
 3.  **Example Session:**
-$ python3 nmap_to_csv.py
-Nmap Scan Results to CSV Converter
----------------------------------
-Enter the Nmap scan results filename [nmap.txt]:
-Enter the output CSV filename [nmap_results.csv]:
-
-Successfully converted Nmap data to nmap_results.csv
-Found 3 open ports across all hosts.
+    - Press `Enter` for input file (`nmap.txt`)
+    - Press `Enter` for output file (`nmap_results.csv`)
 
 **Example output:**
 
