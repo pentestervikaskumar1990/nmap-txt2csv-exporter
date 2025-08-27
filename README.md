@@ -44,5 +44,38 @@ A lightweight and efficient Python script that parses standard Nmap output from 
 
 **Example output:**
 
-📁 Repository Structure
+Successfully converted Nmap data to nmap_results.csv
+Found 3 open ports across all hosts.
+
+
+## Example Output CSV
+
+| IP            | Port | Protocol | State | Service | Version           |
+|---------------|------|----------|-------|---------|-------------------|
+| 45.33.32.156  | 22   | TCP      | open  | ssh     | OpenSSH 6.6.1p1  |
+| 45.33.32.156  | 80   | TCP      | open  | http    | nginx 1.9.2      |
+| 45.33.32.156  | 9929 | TCP      | open  | nping-echo | Nping echo      |
+
+## Contributing
+
+Contributions are welcome! Feel free to:
+1.  Fork the repository
+2.  Create a feature branch (`git checkout -b feature/AmazingFeature`)
+3.  Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4.  Push to the branch (`git push origin feature/AmazingFeature`)
+5.  Open a Pull Request
+
+### Future Enhancements
+-   Support for other Nmap formats (`-oG`, `-oX`)
+-   Command-line flags for automation
+-   Extract OS guesses and script output
+-   PyPI packaging
+
+## License
+
+Distributed under the MIT License. See `LICENSE` file for details.
+
+## Disclaimer
+
+This tool is for educational and authorized security testing only. Always ensure you have proper permission before scanning any network or system.
 
